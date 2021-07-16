@@ -1,0 +1,72 @@
+server:
+  port: 8081
+
+# DataSource Config
+spring:
+  # \u914D\u7F6E\u6570\u636E\u5E93\u4FE1\u606F
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource # \u6307\u5B9A\u6570\u636E\u6E90\u4E3Adruid
+    druid:
+      # \u6570\u636E\u6E90\u914D\u7F6E
+      username: vueadmin
+      password: vueadmin
+      url: jdbc:mysql://47.115.176.127:3306/vueadmin?useUnicode=true&useSSL=false&characterEncoding=utf8&serverTimezone=Asia/Shanghai
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      #Spring Boot \u9ED8\u8BA4\u662F\u4E0D\u6CE8\u5165\u8FD9\u4E9B\u5C5E\u6027\u503C\u7684\uFF0C\u9700\u8981\u81EA\u5DF1\u7ED1\u5B9A
+      # \u521D\u59CB\u5316 \u6700\u5C0F \u6700\u5927
+      initialSize: 5
+      minIdle: 5
+      maxActive: 20
+      # \u914D\u7F6E\u83B7\u53D6\u8FDE\u63A5\u7B49\u5F85\u8D85\u65F6\u7684\u65F6\u95F4
+      maxWait: 60000
+      # \u914D\u7F6E\u95F4\u9694\u591A\u4E45\u624D\u8FDB\u884C\u4E00\u6B21\u68C0\u6D4B\uFF0C\u68C0\u6D4B\u9700\u8981\u5173\u95ED\u7684\u7A7A\u95F2\u8FDE\u63A5\uFF0C\u5355\u4F4D\u662F\u6BEB\u79D2
+      timeBetweenEvictionRunsMillis: 60000
+      # \u914D\u7F6E\u4E00\u4E2A\u8FDE\u63A5\u5728\u6C60\u4E2D\u6700\u5C0F\u751F\u5B58\u7684\u65F6\u95F4\uFF0C\u5355\u4F4D\u662F\u6BEB\u79D2
+      minEvictableIdleTimeMillis: 300000
+      validationQuery: SELECT 1 FROM DUAL
+      testWhileIdle: true
+      testOnBorrow: false
+      testOnReturn: false
+      # \u6253\u5F00PSCache\uFF0C\u5E76\u4E14\u6307\u5B9A\u6BCF\u4E2A\u8FDE\u63A5\u4E0APSCache\u7684\u5927\u5C0F
+      poolPreparedStatements: true
+      maxPoolPreparedStatementPerConnectionSize: 20
+      # \u914D\u7F6E\u591A\u4E2A\u82F1\u6587\u9017\u53F7\u5206\u9694
+      filters: stat,wall
+      # WebStatFilter\u914D\u7F6E\uFF0C\u8BF4\u660E\u8BF7\u53C2\u8003Druid Wiki\uFF0C\u914D\u7F6E_\u914D\u7F6EWebStatFilter
+      # \u662F\u5426\u542F\u7528StatFilter\u9ED8\u8BA4\u503Ctrue
+      web-stat-filter:
+        enabled: true
+        url-pattern: /*
+        exclusions: "*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*"
+        session-stat-enable: false
+        session-stat-max-count: 1000
+        principal-cookie-name: admin
+        principal-session-name: admin
+        profile-enable: true
+      # \u6839\u636E\u914D\u7F6E\u4E2D\u7684url-pattern\u6765\u8BBF\u95EE\u5185\u7F6E\u76D1\u63A7\u9875\u9762\uFF0C\u5982\u679C\u662F\u4E0A\u9762\u7684\u914D\u7F6E\uFF0C\u5185\u7F6E\u76D1\u63A7\u9875\u9762\u7684\u9996\u9875\u662F/druid/index.html
+      # http://loacalhsot:8081/druid
+      stat-view-servlet:
+        url-pattern: /druid/*  # \u76D1\u63A7\u9875\u9762\u8BBF\u95EE\u8DEF\u5F84
+        # \u5141\u8BB8\u6E05\u7A7A\u7EDF\u8BA1\u6570\u636E
+        reset-enable: true
+        login-username: admin
+        login-password: 123456
+          # StatViewSerlvet\u5C55\u793A\u51FA\u6765\u7684\u76D1\u63A7\u4FE1\u606F\u6BD4\u8F83\u654F\u611F\uFF0C\u662F\u7CFB\u7EDF\u8FD0\u884C\u7684\u5185\u90E8\u60C5\u51B5\uFF0C\u5982\u679C\u4F60\u9700\u8981\u505A\u8BBF\u95EE\u63A7\u5236\uFF0C\u53EF\u4EE5\u914D\u7F6Eallow\u548Cdeny\u8FD9\u4E24\u4E2A\u53C2\u6570
+          # deny\u4F18\u5148\u4E8Eallow\uFF0C\u5982\u679C\u5728deny\u5217\u8868\u4E2D\uFF0C\u5C31\u7B97\u5728allow\u5217\u8868\u4E2D\uFF0C\u4E5F\u4F1A\u88AB\u62D2\u7EDD\u3002\u5982\u679Callow\u6CA1\u6709\u914D\u7F6E\u6216\u8005\u4E3A\u7A7A\uFF0C\u5219\u5141\u8BB8\u6240\u6709\u8BBF\u95EE
+          # \u914D\u7F6E\u7684\u683C\u5F0F
+          # <IP>
+        # \u6216\u8005<IP>/<SUB_NET_MASK_size>\u5176\u4E2D128.242.127.1/24
+        # 24\u8868\u793A\uFF0C\u524D\u976224\u4F4D\u662F\u5B50\u7F51\u63A9\u7801\uFF0C\u6BD4\u5BF9\u7684\u65F6\u5019\uFF0C\u524D\u976224\u4F4D\u76F8\u540C\u5C31\u5339\u914D,\u4E0D\u652F\u6301IPV6\u3002
+        allow:
+        deny:
+#  security:
+#    user:
+#      password: 111111
+#      name: user
+mybatis-plus:
+  mapper-locations: classpath*:/mapper/**Mapper.xml
+markerhub:
+  jwt:
+    header: Authorization
+    expire: 604800 #7天，秒单位
+    secret: aiosng14hn2kj3lhnnaspi34jaiosdf2
